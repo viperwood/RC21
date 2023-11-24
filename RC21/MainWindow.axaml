@@ -1,0 +1,70 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="RC21.MainWindow"
+        Title="RC21">
+    <Grid RowDefinitions="* * *" ColumnDefinitions="* * *">
+        <StackPanel Grid.Column="2" Grid.Row="2"  VerticalAlignment="Bottom" Margin="10" IsVisible="False" Name="VarningWindow">
+            <Border BorderBrush="Black" BorderThickness="1">
+                <StackPanel>
+                    <TextBlock TextWrapping="Wrap" FontSize="25" TextAlignment="Center" Foreground="Red" Text="До начала кварцирования осталось 15 минут"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+        <StackPanel Grid.Column="0" Grid.Row="0">
+            <Button Margin="10" Content="Назад" BorderThickness="1" BorderBrush="Black" Click="Beack"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="0">
+            <TextBlock Name="Timers" HorizontalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Grid.Column="2" Grid.Row="0">
+            <StackPanel Margin="10" Width="50" Height="50" Background="Gray" HorizontalAlignment="Center"/>
+            <TextBlock Name="UserNameBlock" HorizontalAlignment="Center"/>
+            <TextBlock Name="RoleUserBlock" HorizontalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1">
+            <StackPanel Name="MenuLab" IsVisible="False">
+                <TextBlock Text="Меню лаборанта" FontSize="20" FontWeight="Black" HorizontalAlignment="Center" Margin="0 0 0 20"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Click="NewOrder" BorderThickness="1" BorderBrush="Black" Margin="0 0 20 0" Width="200" Height="50" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontWeight="Black">
+                        <TextBlock TextWrapping="Wrap" Text="Принять биоматериал"/>
+                    </Button>
+                    <Button BorderThickness="1" BorderBrush="Black" HorizontalContentAlignment="Center" FontWeight="Black" Height="50" VerticalContentAlignment="Center" Content="Отчет" Width="200"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Name="MenuLabRes" IsVisible="False">
+                <TextBlock Text="Меню лаборанта-исследователя" FontSize="20" FontWeight="Black" HorizontalAlignment="Center" Margin="0 0 0 20"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button BorderThickness="1" BorderBrush="Black" Width="200" Height="50" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontWeight="Black">
+                        <TextBlock TextWrapping="Wrap" Text="Анализатор"/>
+                    </Button>
+                    </StackPanel>
+            </StackPanel>
+            <StackPanel Name="MenuAccountant" IsVisible="False">
+                <TextBlock Text="Меню бухгалтера" FontSize="20" FontWeight="Black" HorizontalAlignment="Center" Margin="0 0 0 20"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button BorderThickness="1" BorderBrush="Black" Width="200" Margin="0 0 20 0" Height="50" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontWeight="Black">
+                        <TextBlock TextWrapping="Wrap" Text="Cформировать счет"/>
+                    </Button>
+                    <Button BorderThickness="1" BorderBrush="Black" HorizontalContentAlignment="Center" FontWeight="Black" Height="50" VerticalContentAlignment="Center" Content="Отчет" Width="200"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Name="MenuAdmin" IsVisible="False">
+                <StackPanel>
+                    <TextBlock Text="Меню администратора" FontSize="20" FontWeight="Black" HorizontalAlignment="Center" Margin="0 0 0 20"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button BorderThickness="1" Click="HistoriWindow" BorderBrush="Black" Width="200" Margin="0 0 20 0" Height="50" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontWeight="Black">
+                        <TextBlock TextWrapping="Wrap" Text="Истории входа"/>
+                    </Button>
+                    <Button BorderThickness="1" BorderBrush="Black" HorizontalContentAlignment="Center" FontWeight="Black" Height="50" VerticalContentAlignment="Center" Content="Отчет" Width="200"/>
+                </StackPanel>
+                <Button BorderThickness="1" HorizontalAlignment="Center" BorderBrush="Black" Width="200" Margin="0 20 20 0" Height="50" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontWeight="Black">
+                    <TextBlock TextWrapping="Wrap" Text="Расходные материалы"/>
+                </Button>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

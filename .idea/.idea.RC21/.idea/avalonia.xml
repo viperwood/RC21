@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="RC21/CheckHistoriAdmin.axaml" value="RC21/RC21.csproj" />
+        <entry key="RC21/CreateNewOrder.axaml" value="RC21/RC21.csproj" />
+        <entry key="RC21/LoginWindow.axaml" value="RC21/RC21.csproj" />
+        <entry key="RC21/MainWindow.axaml" value="RC21/RC21.csproj" />
+      </map>
+    </option>
+  </component>
+</project>

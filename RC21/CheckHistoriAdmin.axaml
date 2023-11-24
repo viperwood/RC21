@@ -1,0 +1,59 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="550"
+        x:Class="RC21.CheckHistoriAdmin"
+        Title="CheckHistoriAdmin">
+    <Grid RowDefinitions="100 200 50" ColumnDefinitions="* * *">
+        <StackPanel Grid.Column="0" Grid.Row="0">
+            <Button Margin="10" Content="Нозад" Click="Beack"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="0">
+            <TextBlock HorizontalAlignment="Center" Margin="50" FontSize="25" Text="История Входа"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="1">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Width="300">
+                <StackPanel Width="150" VerticalAlignment="Bottom">
+                    <TextBlock Text="Сортировка по логину" Width="150" TextWrapping="Wrap" TextAlignment="Center"/>
+                    <ComboBox Name="ComboBoxLogin" Width="150" >
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding SortLogin}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Width="150" VerticalAlignment="Bottom">
+                    <TextBlock Text="Сортировка по дате" Width="150" TextWrapping="Wrap" TextAlignment="Center"/>
+                    <ComboBox Name="ComboBoxData" Width="150" SelectionChanged="ComboBoxDataEvent">
+                        <ComboBoxItem Content="По возростанию"/>
+                        <ComboBoxItem Content="По убыванию"/>
+                    </ComboBox>
+                </StackPanel>
+            </StackPanel>
+            <ListBox Name="ListHistori" BorderBrush="Black" BorderThickness="1" Width="300" Height="400">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <ScrollViewer>
+                                    <Border BorderThickness="2" BorderBrush="Black">
+                                        <StackPanel Orientation="Horizontal">
+                                            <StackPanel Margin="10 0 10 0" VerticalAlignment="Center">
+                                                <TextBlock VerticalAlignment="Center" Text="{Binding Id}"/>
+                                            </StackPanel>
+                                            <StackPanel Margin="10">
+                                                <TextBlock Text="{Binding Datalogin}"/>
+                                                <TextBlock Text="{Binding Loginuser}"/>
+                                                <TextBlock Text="{Binding Loginverification}"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+                                </ScrollViewer>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+        </StackPanel>
+    </Grid>
+</Window>

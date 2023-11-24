@@ -1,0 +1,25 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="RC21.LoginWindow"
+        Title="LoginWindow">
+    <Grid RowDefinitions="* * *" ColumnDefinitions="* * *">
+        <StackPanel Grid.Column="1" Grid.Row="0">
+            <TextBlock Name="BlockTimerText" HorizontalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="1">
+            <TextBlock Text="Login" HorizontalAlignment="Center" FontSize="25" FontWeight="Black"/>
+            <TextBox Margin="0 10" Name="LoginUser" HorizontalContentAlignment="Center" Watermark="Login"/>
+                <TextBox Watermark="Password" Name="TextBoxPassword" HorizontalContentAlignment="Center"/>
+                <TextBlock Name = "ErorLogin" IsVisible="False" Margin="0 10" Text="• Неверно указан логин или пароль" Foreground="Red" HorizontalAlignment="Center"/>
+                <CheckBox Content="Показать пароль" Click="VisibleP" Name="VisiblePassword"/>
+            <StackPanel HorizontalAlignment="Center" Margin="0 10" Orientation="Horizontal">
+                <Button Width="100" Margin=" 0 0 10 0" Content="Login" Click="Login" HorizontalContentAlignment="Center"/>
+                <Button Width="100" Content="Reg" HorizontalContentAlignment="Center" Click="Reg"/>
+            </StackPanel>
+            
+        </StackPanel>
+    </Grid>
+</Window>
