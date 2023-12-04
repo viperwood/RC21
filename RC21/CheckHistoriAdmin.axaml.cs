@@ -10,6 +10,7 @@ namespace RC21;
 
 public partial class CheckHistoriAdmin : Window
 {
+    private List<Releasedate> releasedates = Helper.Database.Releasedates.ToList();
     private int? _role;
     public CheckHistoriAdmin()
     {
@@ -29,7 +30,6 @@ public partial class CheckHistoriAdmin : Window
     
     private void Histori()
     {
-        List<Releasedate> releasedates = Helper.Database.Releasedates.ToList();
         List<Usertable> usertables = Helper.Database.Usertables.ToList();
         ComboBoxLogin.Items = usertables.Select(x => new { SortLogin = x.Login}).ToList();
         ListHistori.Items = releasedates.ToList();
@@ -44,19 +44,18 @@ public partial class CheckHistoriAdmin : Window
 
     private void ComboBoxDataEvent(object? sender, SelectionChangedEventArgs e)
     {
-        List<Releasedate> releasedates = Helper.Database.Releasedates.ToList();
-        
-
-        if (ComboBoxData.SelectedIndex != -1)
+        ComboBoxDataElement();
+    }
+    
+    private void ComboBoxDataElement()
+    {
+        if (ComboBoxData.SelectedIndex == 0)
         {
-            if (ComboBoxData.SelectedIndex == 0)
-            {
-                releasedates = releasedates.OrderBy(x => x.Datalogin).ToList();
-            }
-            else
-            {
-                releasedates = releasedates.OrderByDescending(x => x.Datalogin).ToList();
-            }
+            releasedates = releasedates.OrderBy(x => x.Datalogin).ToList();
+        }
+        else
+        {
+            releasedates = releasedates.OrderByDescending(x => x.Datalogin).ToList();
         }
         
         ListHistori.Items = releasedates.ToList();
@@ -64,9 +63,13 @@ public partial class CheckHistoriAdmin : Window
 
     private void ComboBoxLoginEvent(object? sender, RoutedEventArgs e)
     {
-        List<Releasedate> releasedates = Helper.Database.Releasedates.ToList();
-        var a = releasedates.Where(x => x.Userid == ComboBoxLogin.SelectedIndex);
-        ListHistori.Items = a.ToList();
+        releasedates = Helper.Database.Releasedates.Where(x => x.Userid == (ComboBoxLogin.SelectedIndex + 1)).ToList();
+        ListHistori.Items = releasedates;
+
+        if (ComboBoxData.SelectedIndex != -1)
+        {
+            ComboBoxDataElement();
+        }
 
     }
 }

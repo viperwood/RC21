@@ -7,11 +7,11 @@ public partial class Analyzer
 {
     public int Id { get; set; }
 
-    public string? Nameanalyzer { get; set; }
+    public int? Nameanalyzer { get; set; }
 
     public DateTime? Deadline { get; set; }
 
-    public int? Darcode { get; set; }
+    public int? Barcode { get; set; }
 
     public string? Whouse { get; set; }
 
@@ -22,6 +22,8 @@ public partial class Analyzer
     public DateTime? Datasave { get; set; }
 
     public virtual Laboratoryassistant? Laboratoryassistants { get; set; }
+
+    public virtual Analizertipe? NameanalyzerNavigation { get; set; }
 
     public virtual ICollection<Service> Services { get; set; } = new List<Service>();
 }

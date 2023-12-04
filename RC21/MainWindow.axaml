@@ -37,7 +37,7 @@
             <StackPanel Name="MenuLabRes" IsVisible="False">
                 <TextBlock Text="Меню лаборанта-исследователя" FontSize="20" FontWeight="Black" HorizontalAlignment="Center" Margin="0 0 0 20"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button BorderThickness="1" BorderBrush="Black" Width="200" Height="50" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontWeight="Black">
+                    <Button BorderThickness="1" Click="AnalizerButton" BorderBrush="Black" Width="200" Height="50" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontWeight="Black">
                         <TextBlock TextWrapping="Wrap" Text="Анализатор"/>
                     </Button>
                     </StackPanel>

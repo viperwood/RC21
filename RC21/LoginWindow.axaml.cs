@@ -47,8 +47,8 @@ public partial class LoginWindow : Window
 
     private void Reg(object? sender, RoutedEventArgs e)
     {
-        string patientsText =
-            File.ReadAllText(@"C:\Users\prdb\RiderProjects\RC21\RC21\patients.xml");
+        /*string patientsText =
+            File.ReadAllText(@"C:\Users\maxim\RiderProjects\RC21\RC21\patients.xml");
         XDocument xDocumentPatientsText = XDocument.Parse(patientsText);
         var patients = xDocumentPatientsText.Descendants("record")
             .Select(patientsElements => new
@@ -77,7 +77,7 @@ public partial class LoginWindow : Window
             }).ToList();
         
         String bloodText =
-            File.ReadAllText(@"C:\Users\prdb\RiderProjects\RC21\RC21\blood.xml");
+            File.ReadAllText(@"C:\Users\maxim\RiderProjects\RC21\RC21\blood.xml");
         XDocument xDocumentBlood = XDocument.Parse(bloodText);
         var blood = xDocumentBlood.Descendants("record")
             .Select(bloodElement => new
@@ -89,7 +89,7 @@ public partial class LoginWindow : Window
             }).ToList();
 
         String bloodServicesText =
-            File.ReadAllText(@"C:\Users\prdb\RiderProjects\RC21\RC21\blood_services.xml");
+            File.ReadAllText(@"C:\Users\maxim\RiderProjects\RC21\RC21\blood_services.xml");
         XDocument xDocumentDloodServices = XDocument.Parse(bloodServicesText);
         var bloodServices = xDocumentDloodServices.Descendants("record")
             .Select(bloodServicesElement => new
@@ -171,7 +171,7 @@ public partial class LoginWindow : Window
             Helper.Database.Add(service);
             Helper.Database.Add(ordertable);
         }
-        Helper.Database.SaveChanges();
+        Helper.Database.SaveChanges();*/
     }
 
     private void VisibleP(object? sender, RoutedEventArgs e)

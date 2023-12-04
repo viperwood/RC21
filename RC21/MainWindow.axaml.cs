@@ -126,4 +126,11 @@ public partial class MainWindow : Window
         createNewOrder.Show();
         Close();
     }
+
+    private void AnalizerButton(object? sender, RoutedEventArgs e)
+    {
+        AnalizerWindow analizerWindow = new AnalizerWindow(_roleUser);
+        analizerWindow.Show();
+        Close();
+    }
 }

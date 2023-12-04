@@ -14,6 +14,12 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = RC21
 build_property.ProjectDir = C:\Users\prdb\RiderProjects\RC21\RC21\
 
+[C:/Users/prdb/RiderProjects/RC21/RC21/AccountantWindow.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/prdb/RiderProjects/RC21/RC21/AnalizerWindow.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [C:/Users/prdb/RiderProjects/RC21/RC21/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
