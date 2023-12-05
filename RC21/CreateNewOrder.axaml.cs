@@ -17,6 +17,6 @@ public partial class CreateNewOrder : Window
     {
         InitializeComponent();
         List<Analyzer> analyzers = Helper.Database.Analyzers.ToList();
-        Filter.Items = analyzers.Select(x=>x.Darcode.ToString()).OrderBy(x=> x);
+        Filter.Items = analyzers.Select(x=>x.Barcode.ToString()).OrderBy(x=> x);
     }
 }

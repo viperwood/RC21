@@ -47,8 +47,8 @@ public partial class LoginWindow : Window
 
     private void Reg(object? sender, RoutedEventArgs e)
     {
-        /*string patientsText =
-            File.ReadAllText(@"C:\Users\maxim\RiderProjects\RC21\RC21\patients.xml");
+        string patientsText =
+            File.ReadAllText(@"C:\Users\prdb\RiderProjects\RC21\RC21\patients.xml");
         XDocument xDocumentPatientsText = XDocument.Parse(patientsText);
         var patients = xDocumentPatientsText.Descendants("record")
             .Select(patientsElements => new
@@ -77,7 +77,7 @@ public partial class LoginWindow : Window
             }).ToList();
         
         String bloodText =
-            File.ReadAllText(@"C:\Users\maxim\RiderProjects\RC21\RC21\blood.xml");
+            File.ReadAllText(@"C:\Users\prdb\RiderProjects\RC21\RC21\blood.xml");
         XDocument xDocumentBlood = XDocument.Parse(bloodText);
         var blood = xDocumentBlood.Descendants("record")
             .Select(bloodElement => new
@@ -89,7 +89,7 @@ public partial class LoginWindow : Window
             }).ToList();
 
         String bloodServicesText =
-            File.ReadAllText(@"C:\Users\maxim\RiderProjects\RC21\RC21\blood_services.xml");
+            File.ReadAllText(@"C:\Users\prdb\RiderProjects\RC21\RC21\blood_services.xml");
         XDocument xDocumentDloodServices = XDocument.Parse(bloodServicesText);
         var bloodServices = xDocumentDloodServices.Descendants("record")
             .Select(bloodServicesElement => new
@@ -150,10 +150,17 @@ public partial class LoginWindow : Window
         {
             Analyzer analyzer = new Analyzer();
             analyzer.Id = blood[i].id;
-            analyzer.Nameanalyzer = bloodServices[i].analyzer;
-            analyzer.Darcode = blood[i].barcode;
+            analyzer.Barcode = blood[i].barcode;
             analyzer.Deadline = DateTimeOffset.FromUnixTimeMilliseconds(blood[i].date).DateTime;
             Helper.Database.Add(analyzer);
+        }
+        
+        for (int i = 0; i < blood.Count; i++)
+        {
+            Analizertipe analizertipe = new Analizertipe();
+            analizertipe.Id = blood[i].id;
+            analizertipe.Analizername = bloodServices[i].analyzer;
+            Helper.Database.Add(analizertipe);
         }
         
         for (int i = 0; i < bloodServices.Count; i++)
@@ -166,12 +173,12 @@ public partial class LoginWindow : Window
             ordertable.Servicestatus = bloodServices[i].status;
             ordertable.Orderstatus = Convert.ToBoolean(bloodServices[i].accepted);
             ordertable.Resultorder = Convert.ToDecimal(bloodServices[i].result);
-            service.Nameservice = bloodServices[i].service.ToString();
+            service.Nameservice = bloodServices[i].service;
             service.Deadline = DateTimeOffset.FromUnixTimeMilliseconds(bloodServices[i].finished).DateTime;
             Helper.Database.Add(service);
             Helper.Database.Add(ordertable);
         }
-        Helper.Database.SaveChanges();*/
+        Helper.Database.SaveChanges();
     }
 
     private void VisibleP(object? sender, RoutedEventArgs e)

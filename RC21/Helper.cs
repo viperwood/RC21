@@ -4,5 +4,5 @@ namespace RC21;
 
 public class Helper
 {
-    public static readonly User783Context Database = new User783Context();
+    public static readonly PostgresContext Database = new PostgresContext();
 }

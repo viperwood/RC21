@@ -7,9 +7,7 @@ public partial class Service
 {
     public int Id { get; set; }
 
-    public string? Nameservice { get; set; }
-
-    public decimal? Cost { get; set; }
+    public int? Nameservice { get; set; }
 
     public DateTime? Deadline { get; set; }
 
@@ -22,6 +20,8 @@ public partial class Service
     public DateTime? Datasave { get; set; }
 
     public virtual Analyzer? Analyzer { get; set; }
+
+    public virtual Servicetipe? NameserviceNavigation { get; set; }
 
     public virtual ICollection<Orderservice> Orderservices { get; set; } = new List<Orderservice>();
 }

@@ -10,6 +10,8 @@
         <entry key="RC21/CreateNewOrder.axaml" value="RC21/RC21.csproj" />
         <entry key="RC21/LoginWindow.axaml" value="RC21/RC21.csproj" />
         <entry key="RC21/MainWindow.axaml" value="RC21/RC21.csproj" />
+        <entry key="RC21/Test.axaml" value="RC21/RC21.csproj" />
+        <entry key="RC21/tEST.axaml" value="RC21/RC21.csproj" />
       </map>
     </option>
   </component>
