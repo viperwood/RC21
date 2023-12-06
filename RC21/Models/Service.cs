@@ -23,5 +23,5 @@ public partial class Service
 
     public virtual Servicetipe? NameserviceNavigation { get; set; }
 
-    public virtual ICollection<Orderservice> Orderservices { get; set; } = new List<Orderservice>();
+    public virtual ICollection<Ordertable> Ordertables { get; set; } = new List<Ordertable>();
 }

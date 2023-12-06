@@ -15,6 +15,8 @@ public partial class Patient
 
     public string? Country { get; set; }
 
+    public int? Userid { get; set; }
+
     public string? Socialtype { get; set; }
 
     public string? Phone { get; set; }
@@ -23,11 +25,7 @@ public partial class Patient
 
     public int? Insurancepolicynumber { get; set; }
 
-    public int? Userid { get; set; }
-
     public DateTime? Datasave { get; set; }
-
-    public virtual ICollection<Cheack> Cheacks { get; set; } = new List<Cheack>();
 
     public virtual ICollection<Ordertable> Ordertables { get; set; } = new List<Ordertable>();
 

@@ -11,11 +11,9 @@ public partial class Accountant
 
     public int? Userid { get; set; }
 
-    public int? Checkic { get; set; }
-
     public DateTime? Datasave { get; set; }
 
-    public virtual ICollection<Cheack> Cheacks { get; set; } = new List<Cheack>();
+    public virtual ICollection<Ordertable> Ordertables { get; set; } = new List<Ordertable>();
 
     public virtual Serviseaccountant? Serviseaccountant { get; set; }
 

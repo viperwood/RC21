@@ -8,28 +8,37 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using RC21.Models;
 using Avalonia.Skia;
+using SkiaSharp;
 
 namespace RC21;
 
 public partial class AccountantWindow : Window
 {
-    private byte i = 1;
-    private List<string?> buf = new List<string?>();
+    private List<string?> _buf = new List<string?>();
     public AccountantWindow()
     {
         InitializeComponent();
-        listing();
+        /*Listing();*/
+        BoxCompani();
     }
 
-    private void listing()
+    /*private void Listing()
     {
         ComboBoxElement.Items = Helper.Database.Servicetipes.Select(x => new
         {
             x.Nameservice
         }).ToList();
+    }*/
+    
+    private void BoxCompani()
+    {
+        ComboBoxCompani.Items = Helper.Database.Insurancecompanies.Select(x => new
+        {
+            x.Namecompany
+        }).ToList();
     }
 
-    private void Plus(object? sender, RoutedEventArgs e)
+    /*private void Plus(object? sender, RoutedEventArgs e)
     {
         if (ComboBoxElement.SelectedIndex != -1)
         {
@@ -38,11 +47,11 @@ public partial class AccountantWindow : Window
                 .Where(x => x.Id == ComboBoxElement.SelectedIndex + 1)
                 .Select(x => new
                 {
-                    ServiseT = x.Nameservice + " " + x.Cost + " руб"
+                    ServiseT = x.Nameservice + " " + " руб"
                 })
                 .ToList();
-            buf.Add(information[0].ServiseT);
-            ListCost.Items = buf.Select(x => new
+            _buf.Add(information[0].ServiseT);
+            ListCost.Items = _buf.Select(x => new
             {
                 NameAndCost = x
             }).ToList();
@@ -53,37 +62,71 @@ public partial class AccountantWindow : Window
     {
         if (ListCost.SelectedIndex != -1)
         {
-            buf.Remove(buf[ListCost.SelectedIndex]);
-            ListCost.Items = buf.Select(x => new
+            _buf.Remove(_buf[ListCost.SelectedIndex]);
+            ListCost.Items = _buf.Select(x => new
             {
                 NameAndCost = x
             }).ToList();
         }
-    }
+    }*/
 
     private async void Save(object? sender, RoutedEventArgs e)
     {
         SaveFileDialog saveFileDialog = new SaveFileDialog();
-        saveFileDialog.Filters.Add( new FileDialogFilter(){Name = "csv", Extensions = {"csv"}});
-        saveFileDialog.Filters.Add( new FileDialogFilter(){Name = "pdf", Extensions = {"pdf"}});
+        saveFileDialog.Filters?.Add( new FileDialogFilter(){Name = "csv", Extensions = {"csv"}});
+        saveFileDialog.Filters?.Add( new FileDialogFilter(){Name = "pdf", Extensions = {"pdf"}});
         var pathDialog = await saveFileDialog.ShowAsync(this);
         string path = string.Join("", pathDialog);
-        
-        
-        
-        
-        using (FileStream saveFileStream = new FileStream(path, FileMode.Create))
+
+
+
+        if (pathDialog!.LastIndexOf(".csv", StringComparison.Ordinal) != -1)
         {
-            using (StreamWriter save = new StreamWriter(saveFileStream))
+            using (FileStream saveFileStream = new FileStream(path, FileMode.Create))
             {
-                foreach (var VARIABLE in buf)
+                using (StreamWriter save = new StreamWriter(saveFileStream))
                 {
-                    save.WriteLine(VARIABLE);
+                    foreach (var savefile in _buf)
+                    {
+                        save.WriteLine(savefile);
+                    }
                 }
             }
         }
+        else
+        {
+            using (var doc = SKDocument.CreatePdf(path))
+            {
+                using (var canvas = doc.BeginPage(595,842))
+                {
+                    int yindex = 100;
+                    /*using (var paint = new SKPaint())
+                    {
+                        canvas.DrawText(compani, 100, yindex, paint);
+                        yindex += 20;
+                        canvas.DrawText(compani, 100, yindex, paint);
+                        yindex += 20;
+                    }*/
+                    
+                    
+                    
+                    
+                    foreach (var savefile in _buf)
+                    {
+                        using (var paint = new SKPaint())
+                        {
+                            canvas.DrawText(savefile, 100, yindex, paint);
+                        }
+                        yindex += 20;
+                    }
+                    doc.EndPage();
+                }
+                doc.Close();
+            }
+        }
+
         
-        
+
         
         
         

@@ -17,11 +17,21 @@ public partial class Ordertable
 
     public DateTime? Leadtime { get; set; }
 
+    public int? Insurancecompanyid { get; set; }
+
+    public int? Accountantid { get; set; }
+
+    public int? Serviceid { get; set; }
+
     public int? Patientid { get; set; }
 
     public DateTime? Datasave { get; set; }
 
-    public virtual ICollection<Orderservice> Orderservices { get; set; } = new List<Orderservice>();
+    public virtual Accountant? Accountant { get; set; }
+
+    public virtual Insurancecompany? Insurancecompany { get; set; }
 
     public virtual Patient? Patient { get; set; }
+
+    public virtual Service? Service { get; set; }
 }

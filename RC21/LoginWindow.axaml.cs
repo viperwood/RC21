@@ -122,7 +122,7 @@ public partial class LoginWindow : Window
             usertable.Guid = patients[i].guid.ToString();
             usertable.Ua = patients[i].ua.ToString();
             usertable.Id = patients[i].id;
-            patient.Id = i;
+            patient.Id = i+1;
             patient.Passportnumber = patients[i].passport_n;
             patient.Birthday = DateTimeOffset.FromUnixTimeMilliseconds(patients[i].birthdate_timestamp).DateTime;
             patient.Passportseries = patients[i].passport_s;
@@ -130,9 +130,7 @@ public partial class LoginWindow : Window
             patient.Socialtype = patients[i].social_type;
             patient.Phone = patients[i].phone;
             patient.Email = patients[i].email;
-            patient.Userid = patients[i].id;
             insurancecompany.Namecompany = patients[i].insurance_name;
-            patient.Id = i+1;
             insurancecompany.Address = patients[i].insurance_address;
             insurancecompany.Unn = patients[i].insurance_inn;
             insurancecompany.Pc = patients[i].insurance_pc;

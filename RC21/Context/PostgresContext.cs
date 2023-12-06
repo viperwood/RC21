@@ -18,19 +18,13 @@ public partial class PostgresContext : DbContext
 
     public virtual DbSet<Accountant> Accountants { get; set; }
 
-    public virtual DbSet<Admintable> Admintables { get; set; }
-
     public virtual DbSet<Analizertipe> Analizertipes { get; set; }
 
     public virtual DbSet<Analyzer> Analyzers { get; set; }
 
-    public virtual DbSet<Cheack> Cheacks { get; set; }
-
     public virtual DbSet<Insurancecompany> Insurancecompanies { get; set; }
 
     public virtual DbSet<Laboratoryassistant> Laboratoryassistants { get; set; }
-
-    public virtual DbSet<Orderservice> Orderservices { get; set; }
 
     public virtual DbSet<Ordertable> Ordertables { get; set; }
 
@@ -52,7 +46,7 @@ public partial class PostgresContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host = 89.110.53.87; Database = postgres; Username = postgres; Password = 492492");
+        => optionsBuilder.UseNpgsql("Host = 89.110.53.87; Password = 492492; Database = postgres; Username = postgres");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -65,7 +59,6 @@ public partial class PostgresContext : DbContext
             entity.ToTable("accountant");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Checkic).HasColumnName("checkic");
             entity.Property(e => e.Datasave)
                 .HasDefaultValueSql("'9999-01-01 00:00:00'::timestamp without time zone")
                 .HasColumnType("timestamp without time zone")
@@ -80,24 +73,6 @@ public partial class PostgresContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.Accountants)
                 .HasForeignKey(d => d.Userid)
                 .HasConstraintName("accountant_userid_fkey");
-        });
-
-        modelBuilder.Entity<Admintable>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("admintable_pkey");
-
-            entity.ToTable("admintable");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Datasave)
-                .HasDefaultValueSql("'9999-01-01 00:00:00'::timestamp without time zone")
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("datasave");
-            entity.Property(e => e.Userid).HasColumnName("userid");
-
-            entity.HasOne(d => d.User).WithMany(p => p.Admintables)
-                .HasForeignKey(d => d.Userid)
-                .HasConstraintName("admintable_userid_fkey");
         });
 
         modelBuilder.Entity<Analizertipe>(entity =>
@@ -147,34 +122,6 @@ public partial class PostgresContext : DbContext
             entity.HasOne(d => d.NameanalyzerNavigation).WithMany(p => p.Analyzers)
                 .HasForeignKey(d => d.Nameanalyzer)
                 .HasConstraintName("analyzer_nameanalyzer_fkey");
-        });
-
-        modelBuilder.Entity<Cheack>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("cheack_pkey");
-
-            entity.ToTable("cheack");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Accountantid).HasColumnName("accountantid");
-            entity.Property(e => e.Datasave)
-                .HasDefaultValueSql("'9999-01-01 00:00:00'::timestamp without time zone")
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("datasave");
-            entity.Property(e => e.Insurancecompanyid).HasColumnName("insurancecompanyid");
-            entity.Property(e => e.Patientid).HasColumnName("patientid");
-
-            entity.HasOne(d => d.Accountant).WithMany(p => p.Cheacks)
-                .HasForeignKey(d => d.Accountantid)
-                .HasConstraintName("cheack_accountantid_fkey");
-
-            entity.HasOne(d => d.Insurancecompany).WithMany(p => p.Cheacks)
-                .HasForeignKey(d => d.Insurancecompanyid)
-                .HasConstraintName("cheack_insurancecompanyid_fkey");
-
-            entity.HasOne(d => d.Patient).WithMany(p => p.Cheacks)
-                .HasForeignKey(d => d.Patientid)
-                .HasConstraintName("cheack_patientid_fkey");
         });
 
         modelBuilder.Entity<Insurancecompany>(entity =>
@@ -231,34 +178,6 @@ public partial class PostgresContext : DbContext
                 .HasConstraintName("laboratoryassistants_userid_fkey");
         });
 
-        modelBuilder.Entity<Orderservice>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("orderservice_pkey");
-
-            entity.ToTable("orderservice");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Cheackid).HasColumnName("cheackid");
-            entity.Property(e => e.Datasave)
-                .HasDefaultValueSql("'9999-01-01 00:00:00'::timestamp without time zone")
-                .HasColumnType("timestamp without time zone")
-                .HasColumnName("datasave");
-            entity.Property(e => e.Ordertableid).HasColumnName("ordertableid");
-            entity.Property(e => e.Serviceid).HasColumnName("serviceid");
-
-            entity.HasOne(d => d.Cheack).WithMany(p => p.Orderservices)
-                .HasForeignKey(d => d.Cheackid)
-                .HasConstraintName("orderservice_cheackid_fkey");
-
-            entity.HasOne(d => d.Ordertable).WithMany(p => p.Orderservices)
-                .HasForeignKey(d => d.Ordertableid)
-                .HasConstraintName("orderservice_ordertableid_fkey");
-
-            entity.HasOne(d => d.Service).WithMany(p => p.Orderservices)
-                .HasForeignKey(d => d.Serviceid)
-                .HasConstraintName("orderservice_serviceid_fkey");
-        });
-
         modelBuilder.Entity<Ordertable>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("ordertable_pkey");
@@ -266,6 +185,7 @@ public partial class PostgresContext : DbContext
             entity.ToTable("ordertable");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Accountantid).HasColumnName("accountantid");
             entity.Property(e => e.Datasave)
                 .HasDefaultValueSql("'9999-01-01 00:00:00'::timestamp without time zone")
                 .HasColumnType("timestamp without time zone")
@@ -273,6 +193,7 @@ public partial class PostgresContext : DbContext
             entity.Property(e => e.Datecreate)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("datecreate");
+            entity.Property(e => e.Insurancecompanyid).HasColumnName("insurancecompanyid");
             entity.Property(e => e.Leadtime)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("leadtime");
@@ -281,13 +202,27 @@ public partial class PostgresContext : DbContext
             entity.Property(e => e.Resultorder)
                 .HasPrecision(10, 5)
                 .HasColumnName("resultorder");
+            entity.Property(e => e.Serviceid).HasColumnName("serviceid");
             entity.Property(e => e.Servicestatus)
-                .HasMaxLength(100)
+                .HasMaxLength(8)
+                .IsFixedLength()
                 .HasColumnName("servicestatus");
+
+            entity.HasOne(d => d.Accountant).WithMany(p => p.Ordertables)
+                .HasForeignKey(d => d.Accountantid)
+                .HasConstraintName("ordertable_accountantid_fkey");
+
+            entity.HasOne(d => d.Insurancecompany).WithMany(p => p.Ordertables)
+                .HasForeignKey(d => d.Insurancecompanyid)
+                .HasConstraintName("ordertable_insurancecompanyid_fkey");
 
             entity.HasOne(d => d.Patient).WithMany(p => p.Ordertables)
                 .HasForeignKey(d => d.Patientid)
                 .HasConstraintName("ordertable_patientid_fkey");
+
+            entity.HasOne(d => d.Service).WithMany(p => p.Ordertables)
+                .HasForeignKey(d => d.Serviceid)
+                .HasConstraintName("ordertable_serviceid_fkey");
         });
 
         modelBuilder.Entity<Patient>(entity =>

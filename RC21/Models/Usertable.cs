@@ -25,8 +25,6 @@ public partial class Usertable
 
     public virtual ICollection<Accountant> Accountants { get; set; } = new List<Accountant>();
 
-    public virtual ICollection<Admintable> Admintables { get; set; } = new List<Admintable>();
-
     public virtual ICollection<Laboratoryassistant> Laboratoryassistants { get; set; } = new List<Laboratoryassistant>();
 
     public virtual ICollection<Patient> Patients { get; set; } = new List<Patient>();

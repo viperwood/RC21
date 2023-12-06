@@ -25,5 +25,5 @@ public partial class Insurancecompany
 
     public DateTime? Datasave { get; set; }
 
-    public virtual ICollection<Cheack> Cheacks { get; set; } = new List<Cheack>();
+    public virtual ICollection<Ordertable> Ordertables { get; set; } = new List<Ordertable>();
 }
