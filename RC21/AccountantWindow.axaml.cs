@@ -18,58 +18,17 @@ public partial class AccountantWindow : Window
     public AccountantWindow()
     {
         InitializeComponent();
-        /*Listing();*/
         BoxCompani();
     }
-
-    /*private void Listing()
-    {
-        ComboBoxElement.Items = Helper.Database.Servicetipes.Select(x => new
-        {
-            x.Nameservice
-        }).ToList();
-    }*/
     
     private void BoxCompani()
     {
-        ComboBoxCompani.Items = Helper.Database.Insurancecompanies.Select(x => new
+        ComboBoxCompani.Items = Helper.Database.Insurancecompanynames.Select(x => new
         {
-            x.Namecompany
+            Namecompany = x.Companiname
         }).ToList();
     }
-
-    /*private void Plus(object? sender, RoutedEventArgs e)
-    {
-        if (ComboBoxElement.SelectedIndex != -1)
-        {
-            List<Servicetipe> servicetipes = Helper.Database.Servicetipes.ToList();
-            var information = servicetipes
-                .Where(x => x.Id == ComboBoxElement.SelectedIndex + 1)
-                .Select(x => new
-                {
-                    ServiseT = x.Nameservice + " " + " руб"
-                })
-                .ToList();
-            _buf.Add(information[0].ServiseT);
-            ListCost.Items = _buf.Select(x => new
-            {
-                NameAndCost = x
-            }).ToList();
-        }
-    }
-
-    private void Mines(object? sender, RoutedEventArgs e)
-    {
-        if (ListCost.SelectedIndex != -1)
-        {
-            _buf.Remove(_buf[ListCost.SelectedIndex]);
-            ListCost.Items = _buf.Select(x => new
-            {
-                NameAndCost = x
-            }).ToList();
-        }
-    }*/
-
+    
     private async void Save(object? sender, RoutedEventArgs e)
     {
         SaveFileDialog saveFileDialog = new SaveFileDialog();
@@ -100,13 +59,7 @@ public partial class AccountantWindow : Window
                 using (var canvas = doc.BeginPage(595,842))
                 {
                     int yindex = 100;
-                    /*using (var paint = new SKPaint())
-                    {
-                        canvas.DrawText(compani, 100, yindex, paint);
-                        yindex += 20;
-                        canvas.DrawText(compani, 100, yindex, paint);
-                        yindex += 20;
-                    }*/
+                    
                     
                     
                     
@@ -130,5 +83,21 @@ public partial class AccountantWindow : Window
         
         
         
+    }
+
+    private void Orderinformation(object? sender, SelectionChangedEventArgs e)
+    {
+        if (ComboBoxCompani.SelectedIndex != -1)
+        {
+            List<Insurancecompanyname> namesCompaniList = Helper.Database.Insurancecompanynames.ToList();
+            ListCost.Items = Helper.Database.Insurancompanychecks
+                .Where(x => x.Companiname == namesCompaniList[ComboBoxCompani.SelectedIndex].Companiname)
+                .Select(x => new
+                {
+                    Name= "Имя клиента: " + x.Fullname,
+                    Servise= "Название услуги: " + x.Nameservice,
+                    Cost= "Цена: " + x.Cost
+                }).ToList();
+        }
     }
 }

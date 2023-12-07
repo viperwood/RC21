@@ -7,7 +7,7 @@ public partial class Insurancecompany
 {
     public int Id { get; set; }
 
-    public string? Namecompany { get; set; }
+    public int? Namecompanyid { get; set; }
 
     public string? Address { get; set; }
 
@@ -24,6 +24,8 @@ public partial class Insurancecompany
     public int? Bic { get; set; }
 
     public DateTime? Datasave { get; set; }
+
+    public virtual Insurancecompanyname? Namecompany { get; set; }
 
     public virtual ICollection<Ordertable> Ordertables { get; set; } = new List<Ordertable>();
 }

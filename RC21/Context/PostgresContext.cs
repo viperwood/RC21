@@ -24,6 +24,10 @@ public partial class PostgresContext : DbContext
 
     public virtual DbSet<Insurancecompany> Insurancecompanies { get; set; }
 
+    public virtual DbSet<Insurancecompanyname> Insurancecompanynames { get; set; }
+
+    public virtual DbSet<Insurancompanycheck> Insurancompanychecks { get; set; }
+
     public virtual DbSet<Laboratoryassistant> Laboratoryassistants { get; set; }
 
     public virtual DbSet<Ordertable> Ordertables { get; set; }
@@ -46,7 +50,7 @@ public partial class PostgresContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host = 89.110.53.87; Password = 492492; Database = postgres; Username = postgres");
+        => optionsBuilder.UseNpgsql("Host = 89.110.53.87; Password = 492492; Username = postgres; Database = postgres");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -148,11 +152,49 @@ public partial class PostgresContext : DbContext
             entity.Property(e => e.Ipadress)
                 .HasMaxLength(100)
                 .HasColumnName("ipadress");
-            entity.Property(e => e.Namecompany)
-                .HasMaxLength(100)
-                .HasColumnName("namecompany");
+            entity.Property(e => e.Namecompanyid).HasColumnName("namecompanyid");
             entity.Property(e => e.Pc).HasColumnName("pc");
             entity.Property(e => e.Unn).HasColumnName("unn");
+
+            entity.HasOne(d => d.Namecompany).WithMany(p => p.Insurancecompanies)
+                .HasForeignKey(d => d.Namecompanyid)
+                .HasConstraintName("insurancecompany_namecompanyid_fkey");
+        });
+
+        modelBuilder.Entity<Insurancecompanyname>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("insurancecompanyname_pkey");
+
+            entity.ToTable("insurancecompanyname");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Companiname)
+                .HasMaxLength(100)
+                .HasColumnName("companiname");
+            entity.Property(e => e.Datasave)
+                .HasDefaultValueSql("'9999-01-01 00:00:00'::timestamp without time zone")
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("datasave");
+        });
+
+        modelBuilder.Entity<Insurancompanycheck>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("insurancompanycheck");
+
+            entity.Property(e => e.Companiname)
+                .HasMaxLength(100)
+                .HasColumnName("companiname");
+            entity.Property(e => e.Cost)
+                .HasPrecision(10, 2)
+                .HasColumnName("cost");
+            entity.Property(e => e.Fullname)
+                .HasMaxLength(100)
+                .HasColumnName("fullname");
+            entity.Property(e => e.Nameservice)
+                .HasMaxLength(100)
+                .HasColumnName("nameservice");
         });
 
         modelBuilder.Entity<Laboratoryassistant>(entity =>

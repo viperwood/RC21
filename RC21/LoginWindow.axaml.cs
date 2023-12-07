@@ -130,7 +130,7 @@ public partial class LoginWindow : Window
             patient.Socialtype = patients[i].social_type;
             patient.Phone = patients[i].phone;
             patient.Email = patients[i].email;
-            insurancecompany.Namecompany = patients[i].insurance_name;
+            /*insurancecompany.Namecompany = patients[i].insurance_name;*/
             insurancecompany.Address = patients[i].insurance_address;
             insurancecompany.Unn = patients[i].insurance_inn;
             insurancecompany.Pc = patients[i].insurance_pc;
