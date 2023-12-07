@@ -189,12 +189,16 @@ public partial class PostgresContext : DbContext
             entity.Property(e => e.Cost)
                 .HasPrecision(10, 2)
                 .HasColumnName("cost");
+            entity.Property(e => e.Datecreate)
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("datecreate");
             entity.Property(e => e.Fullname)
                 .HasMaxLength(100)
                 .HasColumnName("fullname");
             entity.Property(e => e.Nameservice)
                 .HasMaxLength(100)
                 .HasColumnName("nameservice");
+            entity.Property(e => e.Userid).HasColumnName("userid");
         });
 
         modelBuilder.Entity<Laboratoryassistant>(entity =>

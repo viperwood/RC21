@@ -111,69 +111,13 @@ public partial class LoginWindow : Window
         
 
 
-        for (int i = 0; i < patients.Count; i++)
-        {
-            Insurancecompany insurancecompany = new Insurancecompany();
-            Patient patient = new Patient();
-            Usertable usertable = new Usertable();
-            usertable.Fullname = patients[i].fullName.ToString();
-            usertable.Login = patients[i].login.ToString();
-            usertable.Password = patients[i].pwd.ToString();
-            usertable.Guid = patients[i].guid.ToString();
-            usertable.Ua = patients[i].ua.ToString();
-            usertable.Id = patients[i].id;
-            patient.Id = i+1;
-            patient.Passportnumber = patients[i].passport_n;
-            patient.Birthday = DateTimeOffset.FromUnixTimeMilliseconds(patients[i].birthdate_timestamp).DateTime;
-            patient.Passportseries = patients[i].passport_s;
-            patient.Country = patients[i].country;
-            patient.Socialtype = patients[i].social_type;
-            patient.Phone = patients[i].phone;
-            patient.Email = patients[i].email;
-            /*insurancecompany.Namecompany = patients[i].insurance_name;*/
-            insurancecompany.Address = patients[i].insurance_address;
-            insurancecompany.Unn = patients[i].insurance_inn;
-            insurancecompany.Pc = patients[i].insurance_pc;
-            insurancecompany.Ein = patients[i].ein;
-            insurancecompany.Id = i+1;
-            insurancecompany.Ipadress = patients[i].ipadress;
-            insurancecompany.Bic = patients[i].insurance_bik;
-            insurancecompany.Checkingaccount = patients[i].social_sec_number;
-            Helper.Database.Add(insurancecompany);
-            Helper.Database.Add(patient);
-            Helper.Database.Add(usertable);
-        }
-
-        for (int i = 0; i < blood.Count; i++)
-        {
-            Analyzer analyzer = new Analyzer();
-            analyzer.Id = blood[i].id;
-            analyzer.Barcode = blood[i].barcode;
-            analyzer.Deadline = DateTimeOffset.FromUnixTimeMilliseconds(blood[i].date).DateTime;
-            Helper.Database.Add(analyzer);
-        }
         
-        for (int i = 0; i < blood.Count; i++)
-        {
-            Analizertipe analizertipe = new Analizertipe();
-            analizertipe.Id = blood[i].id;
-            analizertipe.Analizername = bloodServices[i].analyzer;
-            Helper.Database.Add(analizertipe);
-        }
         
         for (int i = 0; i < bloodServices.Count; i++)
         {
-            Service service = new Service();
             Ordertable ordertable = new Ordertable();
-            service.Id = bloodServices[i].id;
-            ordertable.Patientid = bloodServices[i].user;
-            ordertable.Id = i+1;
-            ordertable.Servicestatus = bloodServices[i].status;
-            ordertable.Orderstatus = Convert.ToBoolean(bloodServices[i].accepted);
-            ordertable.Resultorder = Convert.ToDecimal(bloodServices[i].result);
-            service.Nameservice = bloodServices[i].service;
-            service.Deadline = DateTimeOffset.FromUnixTimeMilliseconds(bloodServices[i].finished).DateTime;
-            Helper.Database.Add(service);
+            TimeSpan a = new TimeSpan( i, 0 ,0 ,0);
+            ordertable.Datecreate = DateTime.Now - a;
             Helper.Database.Add(ordertable);
         }
         Helper.Database.SaveChanges();

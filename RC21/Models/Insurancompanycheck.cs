@@ -12,4 +12,8 @@ public partial class Insurancompanycheck
     public decimal? Cost { get; set; }
 
     public string? Companiname { get; set; }
+
+    public int? Userid { get; set; }
+
+    public DateTime? Datecreate { get; set; }
 }
