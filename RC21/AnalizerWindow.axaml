@@ -16,7 +16,8 @@
                                         <DataTemplate>
                                                 <ScrollViewer>
                                                         <StackPanel HorizontalAlignment="Center">
-                                                                <Button Content="{Binding Analizername}" Click="AnalizerNameButton"/>
+                                                                <TextBlock Text="{Binding Analizername}"/>
+                                                                <Button Content="Далее" HorizontalAlignment="Right" Click="AnalizerNameButton"/>
                                                         </StackPanel>
                                                 </ScrollViewer>
                                         </DataTemplate>
@@ -30,7 +31,8 @@
                                         <DataTemplate>
                                                 <ScrollViewer>
                                                         <StackPanel HorizontalAlignment="Center">
-                                                                <Button Content="{Binding Barcode}"/>
+                                                                <TextBlock Text="{Binding Barcode}"/>
+                                                                <Button HorizontalAlignment="Right" Content="Далее"/>
                                                         </StackPanel>
                                                 </ScrollViewer>
                                         </DataTemplate>
