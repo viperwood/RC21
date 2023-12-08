@@ -133,4 +133,11 @@ public partial class MainWindow : Window
         analizerWindow.Show();
         Close();
     }
+
+    private void CreateCheck(object? sender, RoutedEventArgs e)
+    {
+        AccountantWindow accountantWindow = new AccountantWindow(_roleUser);
+        accountantWindow.Show();
+        Close();
+    }
 }

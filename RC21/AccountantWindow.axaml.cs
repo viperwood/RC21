@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using RC21.Models;
@@ -14,15 +15,22 @@ namespace RC21;
 
 public partial class AccountantWindow : Window
 {
+    private int? _role;
     private List<string?> _buf = new List<string?>();
-    private bool _testDate = false;
+    private bool _testSave = false;
     private int _sumCost = 0;
     public AccountantWindow()
     {
         InitializeComponent();
         BoxCompani();
     }
-    
+    public AccountantWindow(int? role)
+    {
+        InitializeComponent();
+        BoxCompani();
+        _role = role;
+    }
+    //вывод всех компаний
     private void BoxCompani()
     {
         ComboBoxCompani.Items = Helper.Database.Insurancecompanynames.Select(x => new
@@ -30,176 +38,210 @@ public partial class AccountantWindow : Window
             Namecompany = x.Companiname
         }).ToList();
     }
-
+    //Сохранение данных в csv/pdf
     private async void Save(object? sender, RoutedEventArgs e)
     {
-        SaveFileDialog saveFileDialog = new SaveFileDialog();
-        saveFileDialog.Filters?.Add(new FileDialogFilter() { Name = "csv", Extensions = { "csv" } });
-        saveFileDialog.Filters?.Add(new FileDialogFilter() { Name = "pdf", Extensions = { "pdf" } });
-        var pathDialog = await saveFileDialog.ShowAsync(this);
-        if (pathDialog != null)
+        _testSave = false;
+        FindInformation();
+        if (_testSave == true)
         {
-            string path = string.Join("", pathDialog);
-            if (pathDialog!.LastIndexOf(".csv", StringComparison.Ordinal) != -1)
+            //Получение аути к файлу
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filters?.Add(new FileDialogFilter() { Name = "pdf", Extensions = { "pdf" } });
+            saveFileDialog.Filters?.Add(new FileDialogFilter() { Name = "csv", Extensions = { "csv" } });
+            var pathDialog = await saveFileDialog.ShowAsync(this);
+            if (pathDialog != null)
             {
-                using (FileStream saveFileStream = new FileStream(path, FileMode.Create))
+                string path = string.Join("", pathDialog);
+                //Сохранение csv файла
+                if (pathDialog!.LastIndexOf(".csv", StringComparison.Ordinal) != -1)
                 {
-                    using (StreamWriter save = new StreamWriter(saveFileStream))
+                    using (FileStream saveFileStream = new FileStream(path, FileMode.Create))
                     {
-                        foreach (var savefile in _buf)
+                        using (StreamWriter save = new StreamWriter(saveFileStream))
                         {
-                            save.WriteLine(savefile);
+                            foreach (var savefile in _buf)
+                            {
+                                save.WriteLine(savefile);
+                            }
                         }
                     }
                 }
-            }
-            else
-            {
-                bool cheack = false;
-                using (var doc = SKDocument.CreatePdf(path))
+                //Сохранение pdf файла
+                else
                 {
-                    int position = 0;
-                    do
+                    bool cheack = false;
+                    using (var doc = SKDocument.CreatePdf(path))
                     {
-                        int yindex = 100;
-                        using (var canvas = doc.BeginPage(595, 842))
+                        int position = 0;
+                        do
                         {
-                            for (; position < _buf.Count; position++)
+                            int yindex = 100;
+                            using (var canvas = doc.BeginPage(595, 842))
                             {
-                                if (yindex < 742)
+                                for (; position < _buf.Count; position++)
                                 {
-                                    using (var paint = new SKPaint())
+                                    if (yindex < 742)
                                     {
-                                        canvas.DrawText(_buf[position], 100, yindex, paint);
-                                    }
+                                        using (var paint = new SKPaint())
+                                        {
+                                            canvas.DrawText(_buf[position], 100, yindex, paint);
+                                        }
 
-                                    yindex += 20;
-                                    cheack = false;
+                                        yindex += 20;
+                                        cheack = false;
+                                    }
+                                    else if (yindex >= 742)
+                                    {
+                                        cheack = true;
+                                        break;
+                                    }
                                 }
-                                else if (yindex >= 742)
-                                {
-                                    cheack = true;
-                                    break;
-                                }
+                                doc.EndPage();
                             }
-                            doc.EndPage();
-                        }
-                    } while (cheack == true) ;
-                    doc.Close();
+                        } while (cheack == true) ;
+                        doc.Close();
+                    }
                 }
             }
         }
     }
-
-    private void Orderinformation(object? sender, SelectionChangedEventArgs e)
+    
+    
+    
+    
+    
+    //Добавление данных для сохранения и вывода на экран
+    private void FindInformation()
     {
+        //Проверка на выбор компании
         if (ComboBoxCompani.SelectedIndex != -1)
         {
-            _sumCost = 0;
-            _buf.Clear();
-
-
-            
-            try
+            //Проверка на наличие текста в полях дат
+            if ((DataOf.Text != null || DataFrom.Text != null) && (DataOf.Text != "" || DataFrom.Text != ""))
             {
-                if (Convert.ToDateTime(DataFrov.Text) <= Convert.ToDateTime(DataOf.Text))
+                bool notFindInformation = false;
+                //Проверка на дату
+                try
                 {
-                    _testDate = true;
+                    //Проверка на правильность дат
+                    if (Convert.ToDateTime(DataOf.Text) >= Convert.ToDateTime(DataFrom.Text))
+                    {
+                        notFindInformation = true;
+                        TestErrore.Text = "";
+                        _buf.Clear();
+                        _sumCost = 0;
+                        //Запись общей информации в буфер
+                        List<Insurancecompanyname> nameCompani = Helper.Database.Insurancecompanynames.ToList();
+                        //!
+                        var information = Helper.Database.Insurancompanychecks
+                            .Where(x => x.Companiname == nameCompani[ComboBoxCompani.SelectedIndex].Companiname 
+                                        && x.Datecreate >= Convert.ToDateTime(DataFrom.Text)
+                                        && x.Datecreate <= Convert.ToDateTime(DataOf.Text))
+                            .Select(x => new
+                            {
+                                x.Fullname,
+                                x.Cost,
+                                x.Userid,
+                                x.Datecreate,
+                                x.Companiname,
+                                x.Nameservice
+                            })
+                            .ToList();
+                        //Выписка данных на экран
+                        ListCost.Items = information
+                            .Select(x => new
+                            {
+                                Name = "Имя пациента: " + x.Fullname,
+                                Servise = "Название услуги: " + x.Nameservice,
+                                Cost = "Цена: " + x.Cost,
+                                Date = "Дата создания: " + x.Datecreate
+                            }).ToList();
+                        //Добавление данных
+                        _buf.Add("Страховая компания: " + information[0].Companiname);
+                        _buf.Add("");
+                        _buf.Add("Оплата");
+                        _buf.Add("С " + DataFrom.Text);
+                        _buf.Add("По " + DataOf.Text);
+                        _buf.Add("");
+                        _buf.Add("Все заказы:");
+                        //Добавление всех данных о всех заказах
+                        for (int i = 0; i < information.Count(); i++)
+                        {
+                            _buf.Add("Имя пациента: " + information[i].Fullname);
+                            _buf.Add("Название услуги: " + information[i].Nameservice);
+                            _buf.Add("Цена: " + information[i].Cost);
+                            _buf.Add("");
+                        }
+                        //Добавление общих данных о заказах каждого пациента
+                        _buf.Add("Итоговая стоимость по каждому пациенту:");
+                        List<Patient> patients = Helper.Database.Patients.ToList();
+                        for (int i = 0; i < patients.Count(); i++)
+                        {
+                            int sumCostFromOnePatient = 0;
+                            string? namePatient = "";
+                            bool cheackPatient = false;
+                            for (int j = 0; j < information.Count(); j++)
+                            {
+                                if (patients[i].Id == information[j].Userid)
+                                {
+                                    _sumCost += Convert.ToInt32(information[j].Cost);
+                                    sumCostFromOnePatient += Convert.ToInt32(information[j].Cost);
+                                    namePatient = information[j].Fullname;
+                                    cheackPatient = true;
+                                }
+                            }
+                            if (cheackPatient == true)
+                            {
+                                _buf.Add("Имя пациента: " + namePatient);
+                                _buf.Add("Стоимость услуг: " + sumCostFromOnePatient);
+                                _buf.Add("");
+                            }
+                        }
+                        //Итоговая стоимость всех заказов
+                        _buf.Add("Итоговая стоимость по всем пациентам: " + _sumCost);
+                        _testSave = true;
+                    }
+                    else
+                    {
+                        TestErrore.Text = "Даты перепутаны!";
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    Test.Text = "Вы перепутали даты местами!";
+                    //Проверка на выподение инфорации
+                    if (notFindInformation == true)
+                    {
+                        TestErrore.Text = "Ничего не найдено";
+                    }
+                    else
+                    {
+                        TestErrore.Text = "Дата введена неверно!";
+                    }
                 }
-            }
-            catch (Exception exception)
-            {
-                Test.Text = "Это не дата!";
-            }
-            
-            
-            
-            List<Insurancecompanyname> namesCompaniList = Helper.Database.Insurancecompanynames.ToList();
-            var information = Helper.Database.Insurancompanychecks
-                .Where(x => x.Companiname == namesCompaniList[ComboBoxCompani.SelectedIndex].Companiname)
-                .Select(x => new
-                {
-                    x.Fullname,
-                    x.Nameservice,
-                    x.Cost,
-                    x.Userid,
-                    x.Datecreate
-                }).ToList();
-
-            if (_testDate == true)
-            {
-                ListCost.Items = information
-                    .Where(x => Convert.ToDateTime(DataFrov.Text) <= Convert.ToDateTime(x.Datecreate) 
-                                && Convert.ToDateTime(DataOf.Text) >= Convert.ToDateTime(x.Datecreate))
-                    .Select(x => new
-                {
-                    Name = "Имя пациента: " + x.Fullname,
-                    Servise = "Название услуги: " + x.Nameservice,
-                    Cost = "Цена: " + x.Cost,
-                    Date = "Дата создания: " + x.Datecreate
-                }).ToList();
             }
             else
             {
-                ListCost.Items = information.Select(x => new
-                {
-                    Name = "Имя пациента: " + x.Fullname,
-                    Servise = "Название услуги: " + x.Nameservice,
-                    Cost = "Цена: " + x.Cost,
-                    Date = "Дата создания: " + x.Datecreate
-                }).ToList(); 
+                TestErrore.Text = "Дата не указана!";
             }
-            
-            
-            
-            
-            
-            
-            
-            
-            _buf.Add("Все заказы");
-            for (int i = 0; i < information.Count; i++)
-            {
-                _sumCost += Convert.ToInt32(information[i].Cost);
-                _buf.Add("Имя пациента: " + information[i].Fullname);
-                _buf.Add("Название услуги: " + information[i].Nameservice);
-                _buf.Add("Цена: " + information[i].Cost);
-                _buf.Add("");
-            }
-            _buf.Add("Итоговая стоимость по каждому пациентам");
-            
-            
-            List<Patient> informationClients = Helper.Database.Patients.ToList();
-            for (int i = 0; i < informationClients.Count; i++)
-            {
-                int sumcost = 0;
-                bool cheack = false;
-                string nameclient = "";
-                
-                
-                
-                for (int j = 0; j < information.Count; j++)
-                {
-                    if (informationClients[i].Id == information[j].Userid)
-                    {
-                        sumcost += Convert.ToInt32(information[j].Cost);
-                        nameclient = information[j].Fullname;
-                        cheack = true;
-                    }
-                }
-
-                if (cheack == true)
-                {
-                    _buf.Add("Имя пациента: " + nameclient);
-                    _buf.Add("Цена: " + sumcost);
-                    _buf.Add("");
-                }
-            }
-            _buf.Add("Итоговая стоимость по всем пациентам: " + _sumCost);
         }
+        else
+        {
+            TestErrore.Text = "Данные не указаны!";
+        }
+    }
+    
+    //Кнопка поиска информации
+    private void Find(object? sender, RoutedEventArgs e)
+    {
+        _testSave = false;
+        FindInformation();
+    }
+
+    private void Beack(object? sender, RoutedEventArgs e)
+    {
+        MainWindow mainWindow = new MainWindow(_role);
+        mainWindow.Show();
+        Close();
     }
 }

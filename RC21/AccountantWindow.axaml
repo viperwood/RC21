@@ -6,9 +6,12 @@
         x:Class="RC21.AccountantWindow"
         Title="AccountantWindow">
     <Grid ColumnDefinitions="* * *" RowDefinitions="50 * *">
+        <StackPanel Grid.Column="0" Grid.Row="0">
+            <Button Content="Назад" Margin="20" Click="Beack"/>
+        </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="1">
             <TextBlock Text="Формирование счета страховой компании" Margin="0 10"/>
-            <ComboBox HorizontalAlignment="Center" Width="200" Margin="0 10" Name="ComboBoxCompani" SelectionChanged="Orderinformation">
+            <ComboBox HorizontalAlignment="Center" Width="200" Margin="0 10" Name="ComboBoxCompani">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Namecompany}"/>
@@ -17,13 +20,14 @@
             </ComboBox>
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                 <TextBlock Text="С" VerticalAlignment="Center"/>
-                <TextBox Margin="10" Watermark="00.00.0000" Name="DataFrov"/>
+                <TextBox Margin="10" Watermark="00.00.0000" Name="DataFrom"/>
             </StackPanel>
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                 <TextBlock Text="По" VerticalAlignment="Center"/>
                 <TextBox Margin="10" Watermark="00.00.0000" Name="DataOf"/>
             </StackPanel>
-            <TextBlock Name="Test" HorizontalAlignment="Center" Margin="0 10"/>
+            <TextBlock Name="TestErrore" HorizontalAlignment="Center" Margin="0 10"/>
+            <Button HorizontalAlignment="Center" Margin="0 10" Content="Найти" Click="Find"/>
             <ListBox Name="ListCost" Width="500" Height="200">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
