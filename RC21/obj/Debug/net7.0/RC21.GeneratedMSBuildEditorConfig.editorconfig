@@ -26,6 +26,9 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [C:/Users/prdb/RiderProjects/RC21/RC21/CheckHistoriAdmin.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[C:/Users/prdb/RiderProjects/RC21/RC21/CreateANewPatientWindow.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [C:/Users/prdb/RiderProjects/RC21/RC21/CreateNewOrder.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 

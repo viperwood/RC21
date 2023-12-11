@@ -1,0 +1,43 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="700"
+        x:Class="RC21.CreateANewPatientWindow"
+        Title="CreateANewPatientWindow">
+    <Grid RowDefinitions="50 * 50" ColumnDefinitions="* * *">
+        <StackPanel Grid.Column="1" Grid.Row="1">
+            <TextBlock Margin="10" HorizontalAlignment="Center" Text="Регистрация клиента" FontSize="20" />
+            <TextBox Name="Fio" Watermark="ФИО" />
+            <TextBlock Text="Дата рождени" HorizontalAlignment="Center" Margin="0 10" />
+            <MaskedTextBox Name="Date" Margin="0 0 0 10" Mask="0000.00.00"  />
+            <TextBlock Text="Серия и номер паспорта" HorizontalAlignment="Center" Margin="0 0 0 10" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <MaskedTextBox Name="SeriesPassport" Mask="0000" Watermark="Серия паспорта" Margin="0 0 10 0" />
+                <MaskedTextBox Name="NumberPassport" Mask="000 000" Watermark="Номер паспорта" />
+            </StackPanel>
+            <TextBlock Text="Номер телефона" HorizontalAlignment="Center" Margin="0 10" />
+            <MaskedTextBox Name="Phone" Mask="+099 ( 000 ) 000 00 00" Margin=" 0 0 0 10" />
+            <TextBox Name="Email" Watermark="e-mail" />
+            <TextBlock Text="Номер страхового полиса" HorizontalAlignment="Center" Margin="0 10" />
+            <MaskedTextBox Name="NumberPolis" Mask="0000 0000 0000 0000" Margin=" 0 0 0 10" />
+            <TextBlock Text="Тип страхового полиса" HorizontalAlignment="Center" Margin=" 0  0 0 10" />
+            <ComboBox Name="ComboBoxSociaTipe" Width="200" HorizontalAlignment="Center">
+                <ComboBoxItem>oms</ComboBoxItem>
+                <ComboBoxItem>dms</ComboBoxItem>
+            </ComboBox>
+            <TextBlock Text="Название страховой компанни" HorizontalAlignment="Center" Margin="0 10" />
+            <ComboBox Name="ComboBoxInsuranceCompany" HorizontalAlignment="Center" Width="200">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding InsuranceCompanyName}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <TextBlock Text="" IsVisible="False" Name="ErrorText" Foreground="Red"
+                       Margin="10" />
+            <Button HorizontalAlignment="Center" Click="Adding" Margin="10" BorderBrush="Black" BorderThickness="1"
+                    Content="Добавит" />
+        </StackPanel>
+    </Grid>
+</Window>

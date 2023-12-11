@@ -100,10 +100,10 @@ public partial class CreateNewOrder : Window
                     ErrorFio.IsVisible = true;
                 }
             }
-            /*for (int i = 0; i < _listFromSelectServises.Count; i++)
+            for (int i = 0; i < _listFromSelectServises.Count; i++)
             {
                 
-            }*/
+            }
         }
         else
         {
