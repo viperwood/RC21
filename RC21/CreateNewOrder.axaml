@@ -2,12 +2,37 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="800"
         x:Class="RC21.CreateNewOrder"
         Title="CreateNewOrder">
     <Grid ColumnDefinitions="* * *" RowDefinitions="* * *">
+        <StackPanel Grid.Column="0" Grid.Row="0">
+            <Button Content="Назад" Click="Beack" Margin="10"/>
+        </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="1">
-            <AutoCompleteBox FilterMode="StartsWith" Name="Filter" Watermark="Номер пробирки"/>
-        </StackPanel> 
+            <AutoCompleteBox FilterMode="StartsWith" Width="265" Name="Filter" Watermark="Номер пробирки"/>
+            <AutoCompleteBox Width="265" FilterMode="StartsWith" Name="FullNameClients" Watermark="ФИО пациента" Margin=" 0 10"/>
+            <TextBlock IsVisible="False" Name="ErrorFio" HorizontalAlignment="Center" Text="Пациент небыл зарегистрирован!" VerticalAlignment="Center" Margin=" 0 0 0 10" Foreground="Red"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <ComboBox Width="200" Name="ServiceBox" HorizontalAlignment="Center">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Nameservice}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Button Content="+" Click="plus" Margin="10 0"/>
+                <Button Content="-" Click="mines"/>
+            </StackPanel>
+            <ListBox Name="ServiceList" Width="300" Height="300" Margin="10" BorderBrush="Black" BorderThickness="1">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding SelectedServises}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <TextBlock IsVisible="False" Name="ErrorDate" HorizontalAlignment="Center" Text="Все поля обязательны" VerticalAlignment="Center" Margin=" 0 10 0 0" Foreground="Red"/>
+            <Button Content="Далее" Click="Further" Margin="10" HorizontalAlignment="Center"/>
+        </StackPanel>
     </Grid>
 </Window>

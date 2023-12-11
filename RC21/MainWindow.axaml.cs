@@ -122,7 +122,7 @@ public partial class MainWindow : Window
 
     private void NewOrder(object? sender, RoutedEventArgs e)
     {
-        CreateNewOrder createNewOrder = new CreateNewOrder();
+        CreateNewOrder createNewOrder = new CreateNewOrder(_roleUser);
         createNewOrder.Show();
         Close();
     }
