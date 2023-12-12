@@ -16,6 +16,7 @@ public partial class CreateNewOrder : Window
     private List<string> _listFromSelectServises = new List<string>();
     private List<Servicetipe> _servicetipes = Helper.Database.Servicetipes.ToList();
     private int? _role;
+    private int _compani;
     
     public CreateNewOrder()
     {
@@ -88,22 +89,33 @@ public partial class CreateNewOrder : Window
         {
             ErrorDate.IsVisible = false;
             List<Usertable> usertables = Helper.Database.Usertables.Where(x => x.Roleid == 5).ToList();
+            bool errorUserName = false;
             for (int i = 0; i < usertables.Count(); i++)
             {
                 if (FullNameClients.Text == usertables[i].Fullname)
                 {
-                    ErrorFio.IsVisible = false;
+                    errorUserName = false;
                     break;
                 }
                 else
                 {
-                    ErrorFio.IsVisible = true;
+                    errorUserName = true;
                 }
             }
-            for (int i = 0; i < _listFromSelectServises.Count; i++)
+
+            if (errorUserName == true)
             {
+                CreateANewPatientWindow createANewPatientWindow = new CreateANewPatientWindow();
+                createANewPatientWindow.Show();
+                
+                
+                
                 
             }
+            /*for (int i = 0; i < _listFromSelectServises.Count; i++)
+            {
+                
+            }*/
         }
         else
         {

@@ -17,13 +17,10 @@ public class InputValidation
         get { return _fio; }
         set
         {
+            _fio = "";
             if (string.IsNullOrEmpty(value))
             {
                 _fio = "ФИО не указанно!";
-            }
-            else
-            {
-                _fio = "";
             }
         }
     }
@@ -33,13 +30,10 @@ public class InputValidation
         get { return _date; }
         set
         {
-            if (value?.Split('_') != null)
+            _date = "";
+            if (value?.Contains('_') == true)
             {
                 _date = "Дата не введена или введена неправильно!";
-            }
-            else
-            {
-                _date = "";
             }
         }
     }
@@ -49,13 +43,10 @@ public class InputValidation
         get { return _seriesPassport; }
         set
         {
-            if (value?.Split('_') != null)
+            _seriesPassport = "";
+            if (value?.Contains('_') == true)
             {
                 _seriesPassport = "Серия паспорта не введена или введена неверно!";
-            }
-            else
-            {
-                _seriesPassport = "";
             }
         }
     }
@@ -65,13 +56,23 @@ public class InputValidation
         get { return _numberPassport; }
         set
         {
-            if (value?.Split('_') != null)
+            _numberPassport = "";
+            if (value?.Contains('_') == true)
             {
                 _numberPassport = "Номер паспорта не введен или введен неверно!";
             }
-            else
+        }
+    }
+    
+    public string? PhoneTest
+    {
+        get { return _phone; }
+        set
+        {
+            _phone = "";
+            if (value?.Contains('_') == true)
             {
-                _numberPassport = "";
+                _phone = "Телефон не введен или введен неверно!";
             }
         }
     }
@@ -81,30 +82,11 @@ public class InputValidation
         get { return _email; }
         set
         {
+            _email = "";
             if (string.IsNullOrEmpty(value)
-                || value.Contains("@") || value.Contains(".") || value.IndexOf('@') > value.IndexOf('.'))
+                || value.Contains("@") == false || value.Contains(".") == false || value.IndexOf('@') > value.IndexOf('.'))
             {
                 _email = "E-mail не введен или введен неверно!";
-            }
-            else
-            {
-                _email = "";
-            }
-        }
-    }
-
-    public string? PhoneTest
-    {
-        get { return _phone; }
-        set
-        {
-            if (value?.Split('_') != null)
-            {
-                _phone = "Телефон не введен или введен неверно!";
-            }
-            else
-            {
-                _phone = "";
             }
         }
     }
@@ -114,13 +96,10 @@ public class InputValidation
         get { return _numberPolis; }
         set
         {
-            if (value?.Split('_') != null)
+            _numberPolis = "";
+            if (value?.Contains('_') == true)
             {
                 _numberPolis = "Номер полиса не введен или введен неверно!";
-            }
-            else
-            {
-                _numberPolis = "";
             }
         }
     }
