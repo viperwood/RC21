@@ -11,12 +11,20 @@ namespace RC21;
 
 public partial class CreateANewPatientWindow : Window
 {
+    private int? _role;
+    private byte _fineltest = 0;
     public CreateANewPatientWindow()
     {
         InitializeComponent();
         LoadComboBoxInsuranceCompany();
     }
     
+    public CreateANewPatientWindow( int? role)
+    {
+        InitializeComponent();
+        LoadComboBoxInsuranceCompany();
+        _role = role;
+    }
 
     private void LoadComboBoxInsuranceCompany()
     {
@@ -91,9 +99,16 @@ public partial class CreateANewPatientWindow : Window
 
         if (ErrorText.Text == "")
         {
+            _fineltest = 0;
             AddingUserTable();
             AddingPatient();
             
+        }
+        if (_fineltest == 2)
+        {
+            CreateNewOrder createNewOrder = new CreateNewOrder(_role,ComboBoxInsuranceCompany.SelectedIndex);
+            createNewOrder.Activate();
+            this.Close();
         }
     }
 
@@ -117,9 +132,22 @@ public partial class CreateANewPatientWindow : Window
         patient.Phone = Phone.Text;
         patient.Email = Email.Text;
         patient.Insurancepolicynumber = (int?)Convert.ToInt64(NumberPolis.Text.Replace(" ", ""));
-        patient.Birthday = Convert.ToDateTime(Date.Text.Replace(",", "."));
-        Helper.Database.Add(patient);
-        Helper.Database.SaveChanges();
+
+        try
+        {
+            patient.Birthday = Convert.ToDateTime(Date.Text.Replace(",", "."));
+        }
+        catch (Exception e)
+        {
+            ErrorText.Text = "Дата не введена или введена неправильно!";
+        }
+
+        if (ErrorText.Text == "")
+        {
+            Helper.Database.Add(patient);
+            Helper.Database.SaveChanges();
+            _fineltest += 1;
+        }
     }
 
     private void AddingUserTable()
@@ -133,12 +161,12 @@ public partial class CreateANewPatientWindow : Window
         usertable.Releasedate = DateTime.Now;
         Helper.Database.Add(usertable);
         Helper.Database.SaveChanges();
+        _fineltest += 1;
     }
 
     private void Beack(object? sender, RoutedEventArgs e)
     {
         Close();
-        
     }
 
     

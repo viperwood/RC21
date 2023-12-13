@@ -14,9 +14,9 @@ namespace RC21;
 public partial class CreateNewOrder : Window
 {
     private List<string> _listFromSelectServises = new List<string>();
+    private List<int> _listFromSelectServisesId = new List<int>();
     private List<Servicetipe> _servicetipes = Helper.Database.Servicetipes.ToList();
     private int? _role;
-    private int _compani;
     
     public CreateNewOrder()
     {
@@ -29,14 +29,16 @@ public partial class CreateNewOrder : Window
         InitializeComponent();
         ListOfServises();
         SelectOfTheNumberBarcode();
-        SelectOfTheFullNameClients();
         _role = roleUser;
     }
     
-    private void SelectOfTheFullNameClients()
+    public CreateNewOrder(int? roleUser, int nameCompani)
     {
-        List<Usertable> usertables = Helper.Database.Usertables.ToList();
-        FullNameClients.Items = usertables.Where(x => x.Roleid == 5).Select(x => x.Fullname).OrderBy(x => x);
+        InitializeComponent();
+        ListOfServises();
+        SelectOfTheNumberBarcode();
+        _role = roleUser;
+        SaweCompani.Compani = nameCompani;
     }
     
     private void SelectOfTheNumberBarcode()
@@ -64,6 +66,7 @@ public partial class CreateNewOrder : Window
     private void mines(object? sender, RoutedEventArgs e)
     { 
         _listFromSelectServises.Remove(_listFromSelectServises[ServiceList.SelectedIndex]);
+        _listFromSelectServisesId.Remove(ServiceList.SelectedIndex);
         LoadServiseList();
     }
 
@@ -72,6 +75,7 @@ public partial class CreateNewOrder : Window
         if (ServiceBox.SelectedIndex != -1)
         {
             _listFromSelectServises.Add(_servicetipes[ServiceBox.SelectedIndex].Nameservice!);
+            _listFromSelectServisesId.Add(_servicetipes[ServiceBox.SelectedIndex].Id);
             LoadServiseList();
         }
     }
@@ -105,21 +109,49 @@ public partial class CreateNewOrder : Window
 
             if (errorUserName == true)
             {
-                CreateANewPatientWindow createANewPatientWindow = new CreateANewPatientWindow();
+                CreateANewPatientWindow createANewPatientWindow = new CreateANewPatientWindow(_role);
                 createANewPatientWindow.Show();
-                
-                
-                
-                
             }
-            /*for (int i = 0; i < _listFromSelectServises.Count; i++)
+            else
             {
+
+                List<Patient> patients = Helper.Database.Patients.ToList();
+                var idusername = Helper.Database.Usertables.Where(y => y.Fullname == FullNameClients.Text)
+                    .Select(y => y.Id).ToList();
+                var idpatient = patients.Where(x => x.Userid == idusername[0])
+                    .Select(x => x.Id).ToList();
                 
-            }*/
+                
+                
+                
+                
+                
+                
+                    
+                Ordertable ordertable = new Ordertable();
+                for (int i = 0; i < _listFromSelectServises.Count; i++)
+                {
+                    ordertable.Id = Helper.Database.Ordertables.Count() + 1;
+                    ordertable.Datecreate = DateTime.Now;
+                    ordertable.Orderstatus = false;
+                    ordertable.Servicestatus = "Rejected";
+                    ordertable.Insurancecompanyid = SaweCompani.Compani;
+                    ordertable.Serviceid = _listFromSelectServisesId[i];
+                    ordertable.Patientid = idpatient[0];
+                    Helper.Database.Add(ordertable);
+                }
+                Helper.Database.SaveChanges();
+            }
         }
         else
         {
             ErrorDate.IsVisible = true;
         }
+    }
+
+    private void TestingVariant(object? sender, KeyEventArgs e)
+    {
+        List<Usertable> usertables = Helper.Database.Usertables.ToList();
+        FullNameClients.Items = usertables.Where(x => x.Roleid == 5).Select(x => x.Fullname).OrderBy(x => x);
     }
 }

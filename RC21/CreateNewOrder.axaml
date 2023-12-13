@@ -11,7 +11,7 @@
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="1">
             <AutoCompleteBox FilterMode="StartsWith" Width="265" Name="Filter" Watermark="Номер пробирки"/>
-            <AutoCompleteBox Width="265" FilterMode="StartsWith" Name="FullNameClients" Watermark="ФИО пациента" Margin=" 0 10"/>
+            <AutoCompleteBox Width="265" KeyUp="TestingVariant" FilterMode="StartsWith" Name="FullNameClients" Watermark="ФИО пациента" Margin=" 0 10"/>
             <TextBlock IsVisible="False" Name="ErrorFio" HorizontalAlignment="Center" Text="Пациент небыл зарегистрирован!" VerticalAlignment="Center" Margin=" 0 0 0 10" Foreground="Red"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <ComboBox Width="200" Name="ServiceBox" HorizontalAlignment="Center">
@@ -31,6 +31,8 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+            <TextBlock Name="NameComp"/>
+            <TextBlock Name="Create"/>
             <TextBlock IsVisible="False" Name="ErrorDate" HorizontalAlignment="Center" Text="Все поля обязательны" VerticalAlignment="Center" Margin=" 0 10 0 0" Foreground="Red"/>
             <Button Content="Далее" Click="Further" Margin="10" HorizontalAlignment="Center"/>
         </StackPanel>

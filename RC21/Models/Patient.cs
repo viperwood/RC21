@@ -23,7 +23,7 @@ public partial class Patient
 
     public string? Email { get; set; }
 
-    public int? Insurancepolicynumber { get; set; }
+    public long? Insurancepolicynumber { get; set; }
 
     public DateTime? Datasave { get; set; }
 
