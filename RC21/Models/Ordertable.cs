@@ -17,8 +17,6 @@ public partial class Ordertable
 
     public DateTime? Leadtime { get; set; }
 
-    public int? Insurancecompanyid { get; set; }
-
     public int? Accountantid { get; set; }
 
     public int? Serviceid { get; set; }
@@ -28,8 +26,6 @@ public partial class Ordertable
     public DateTime? Datasave { get; set; }
 
     public virtual Accountant? Accountant { get; set; }
-
-    public virtual Insurancecompany? Insurancecompany { get; set; }
 
     public virtual Patient? Patient { get; set; }
 

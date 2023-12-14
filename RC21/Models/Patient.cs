@@ -23,9 +23,13 @@ public partial class Patient
 
     public string? Email { get; set; }
 
-    public long? Insurancepolicynumber { get; set; }
+    public string? Insurancepolicynumber { get; set; }
+
+    public int? Insurancecompanyid { get; set; }
 
     public DateTime? Datasave { get; set; }
+
+    public virtual Insurancecompany? Insurancecompany { get; set; }
 
     public virtual ICollection<Ordertable> Ordertables { get; set; } = new List<Ordertable>();
 

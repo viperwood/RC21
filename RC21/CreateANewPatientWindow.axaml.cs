@@ -19,6 +19,10 @@ public partial class CreateANewPatientWindow : Window
         LoadComboBoxInsuranceCompany();
     }
     
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="role"> id Роли пользователя</param>
     public CreateANewPatientWindow( int? role)
     {
         InitializeComponent();
@@ -106,7 +110,7 @@ public partial class CreateANewPatientWindow : Window
         }
         if (_fineltest == 2)
         {
-            CreateNewOrder createNewOrder = new CreateNewOrder(_role,ComboBoxInsuranceCompany.SelectedIndex);
+            CreateNewOrder createNewOrder = new CreateNewOrder(_role);
             createNewOrder.Activate();
             this.Close();
         }
@@ -130,8 +134,9 @@ public partial class CreateANewPatientWindow : Window
             patient.Socialtype = "dms";
         }
         patient.Phone = Phone.Text;
+        patient.Insurancecompanyid = ComboBoxInsuranceCompany.SelectedIndex;
         patient.Email = Email.Text;
-        patient.Insurancepolicynumber = (int?)Convert.ToInt64(NumberPolis.Text.Replace(" ", ""));
+        patient.Insurancepolicynumber = NumberPolis.Text.Replace(" ", "");
 
         try
         {

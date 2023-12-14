@@ -32,15 +32,6 @@ public partial class CreateNewOrder : Window
         _role = roleUser;
     }
     
-    public CreateNewOrder(int? roleUser, int nameCompani)
-    {
-        InitializeComponent();
-        ListOfServises();
-        SelectOfTheNumberBarcode();
-        _role = roleUser;
-        SaweCompani.Compani = nameCompani;
-    }
-    
     private void SelectOfTheNumberBarcode()
     {
         Filter.Items = Helper.Database.Analyzers.Select(x=>x.Barcode.ToString()).OrderBy(x=> x);
@@ -135,12 +126,12 @@ public partial class CreateNewOrder : Window
                     ordertable.Datecreate = DateTime.Now;
                     ordertable.Orderstatus = false;
                     ordertable.Servicestatus = "Rejected";
-                    ordertable.Insurancecompanyid = SaweCompani.Compani;
                     ordertable.Serviceid = _listFromSelectServisesId[i];
                     ordertable.Patientid = idpatient[0];
                     Helper.Database.Add(ordertable);
+                    Helper.Database.SaveChanges();
                 }
-                Helper.Database.SaveChanges();
+                
             }
         }
         else
@@ -152,6 +143,11 @@ public partial class CreateNewOrder : Window
     private void TestingVariant(object? sender, KeyEventArgs e)
     {
         List<Usertable> usertables = Helper.Database.Usertables.ToList();
+
+        List<string> check = new List<string>();
+        
+
+
         FullNameClients.Items = usertables.Where(x => x.Roleid == 5).Select(x => x.Fullname).OrderBy(x => x);
     }
 }

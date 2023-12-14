@@ -111,7 +111,10 @@ public partial class AccountantWindow : Window
     
     
     
-    //Добавление данных для сохранения и вывода на экран
+   
+    /// <summary>
+    /// Добавление данных для сохранения и вывода на экран
+    /// </summary>
     private void FindInformation()
     {
         //Проверка на выбор компании

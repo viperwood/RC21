@@ -50,7 +50,7 @@ public partial class PostgresContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host = 89.110.53.87; Password = 492492; Database = postgres; Username = postgres");
+        => optionsBuilder.UseNpgsql("Host = 89.110.53.87; Database = postgres; Password = 492492; Username = postgres");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -239,7 +239,6 @@ public partial class PostgresContext : DbContext
             entity.Property(e => e.Datecreate)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("datecreate");
-            entity.Property(e => e.Insurancecompanyid).HasColumnName("insurancecompanyid");
             entity.Property(e => e.Leadtime)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("leadtime");
@@ -257,10 +256,6 @@ public partial class PostgresContext : DbContext
             entity.HasOne(d => d.Accountant).WithMany(p => p.Ordertables)
                 .HasForeignKey(d => d.Accountantid)
                 .HasConstraintName("ordertable_accountantid_fkey");
-
-            entity.HasOne(d => d.Insurancecompany).WithMany(p => p.Ordertables)
-                .HasForeignKey(d => d.Insurancecompanyid)
-                .HasConstraintName("ordertable_insurancecompanyid_fkey");
 
             entity.HasOne(d => d.Patient).WithMany(p => p.Ordertables)
                 .HasForeignKey(d => d.Patientid)
@@ -291,7 +286,10 @@ public partial class PostgresContext : DbContext
             entity.Property(e => e.Email)
                 .HasMaxLength(100)
                 .HasColumnName("email");
-            entity.Property(e => e.Insurancepolicynumber).HasColumnName("insurancepolicynumber");
+            entity.Property(e => e.Insurancecompanyid).HasColumnName("insurancecompanyid");
+            entity.Property(e => e.Insurancepolicynumber)
+                .HasMaxLength(100)
+                .HasColumnName("insurancepolicynumber");
             entity.Property(e => e.Passportnumber).HasColumnName("passportnumber");
             entity.Property(e => e.Passportseries).HasColumnName("passportseries");
             entity.Property(e => e.Phone)
@@ -302,6 +300,10 @@ public partial class PostgresContext : DbContext
                 .IsFixedLength()
                 .HasColumnName("socialtype");
             entity.Property(e => e.Userid).HasColumnName("userid");
+
+            entity.HasOne(d => d.Insurancecompany).WithMany(p => p.Patients)
+                .HasForeignKey(d => d.Insurancecompanyid)
+                .HasConstraintName("patient_insurancecompanyid_fkey");
 
             entity.HasOne(d => d.User).WithMany(p => p.Patients)
                 .HasForeignKey(d => d.Userid)

@@ -27,5 +27,5 @@ public partial class Insurancecompany
 
     public virtual Insurancecompanyname? Namecompany { get; set; }
 
-    public virtual ICollection<Ordertable> Ordertables { get; set; } = new List<Ordertable>();
+    public virtual ICollection<Patient> Patients { get; set; } = new List<Patient>();
 }
