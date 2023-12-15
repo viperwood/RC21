@@ -139,15 +139,109 @@ public partial class CreateNewOrder : Window
             ErrorDate.IsVisible = true;
         }
     }
-
     private void TestingVariant(object? sender, KeyEventArgs e)
     {
-        List<Usertable> usertables = Helper.Database.Usertables.ToList();
+
+
+        List<Usertable> usertables = Helper.Database.Usertables.Where(x => x.Roleid == 5).ToList();
 
         List<string> check = new List<string>();
+
+        string firstWord = FullNameClients.Text;
+
+        foreach (var secondWord in usertables)
+        {
+            var n = FullNameClients.Text.Length + 1;
+            var m = secondWord.Fullname.Length + 1;
+            var matrixD = new int[n, m];
+
+            const int deletionCost = 1;
+            const int insertionCost = 1;
+
+            for (var i = 0; i < n; i++)
+            {
+                matrixD[i, 0] = i;
+            } 
+
+            for (var j = 0; j < m; j++)
+            {
+                matrixD[0, j] = j;
+            }
+
+            for (var i = 1; i < n; i++)
+            {
+                for (var j = 1; j < m; j++)
+                {
+                    var substitutionCost = firstWord[i - 1] == secondWord.Fullname[j - 1] ? 0 : 1;
+
+                    matrixD[i, j] = Minimum(matrixD[i - 1, j] + deletionCost,          // удаление
+                        matrixD[i, j - 1] + insertionCost,         // вставка
+                        matrixD[i - 1, j - 1] + substitutionCost); // замена
+                }
+            }
+            check.Add(matrixD[n - 1, m - 1].ToString());
+            FullNameClients.Items =  check.Select(x => x).ToList();
+        }
         
+        
+        
+        
+        
+        static int Minimum(int a, int b, int c) => (a = a < b ? a : b) < c ? a : c;
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        /*List<Usertable> usertables = Helper.Database.Usertables.Where(x => x.Roleid == 5).ToList();
 
+        List<string> check = new List<string>();
 
-        FullNameClients.Items = usertables.Where(x => x.Roleid == 5).Select(x => x.Fullname).OrderBy(x => x);
+        if (string.IsNullOrEmpty(FullNameClients.Text) == false)
+        {
+            int schet = 0;
+            foreach (var element in usertables)
+            {
+                int k = 0;
+                if (FullNameClients.Text.Length > element.Fullname.Length)
+                {
+                    
+                    foreach (var i in FullNameClients.Text)
+                    {
+                        if (i != element.Fullname[k])
+                        {
+                            schet++;
+                        }
+                        k++;
+                    }
+                }
+                else
+                {
+                    foreach (var i in element.Fullname)
+                    {
+                        if (i != FullNameClients.Text)
+                        {
+                            schet++;
+                        }
+                        k++;
+                    }
+                }
+                if (schet < 4)
+                {
+                    check.Add(element.Fullname);
+                }
+                
+            }
+            FullNameClients.Items = check.Select(x => x).ToList();
+        }*/
     }
 }
