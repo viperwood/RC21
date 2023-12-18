@@ -45,7 +45,7 @@ public partial class AccountantWindow : Window
         FindInformation();
         if (_testSave == true)
         {
-            //Получение аути к файлу
+            //Получение пути к файлу
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filters?.Add(new FileDialogFilter() { Name = "pdf", Extensions = { "pdf" } });
             saveFileDialog.Filters?.Add(new FileDialogFilter() { Name = "csv", Extensions = { "csv" } });
@@ -136,7 +136,6 @@ public partial class AccountantWindow : Window
                         _sumCost = 0;
                         //Запись общей информации в буфер
                         List<Insurancecompanyname> nameCompani = Helper.Database.Insurancecompanynames.ToList();
-                        //!
                         var information = Helper.Database.Insurancompanychecks
                             .Where(x => x.Companiname == nameCompani[ComboBoxCompani.SelectedIndex].Companiname 
                                         && x.Datecreate >= Convert.ToDateTime(DataFrom.Text)

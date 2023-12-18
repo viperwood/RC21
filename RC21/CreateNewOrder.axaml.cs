@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -8,6 +9,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using RC21.Models;
+using SkiaSharp;
 
 namespace RC21;
 
@@ -17,7 +19,9 @@ public partial class CreateNewOrder : Window
     private List<int> _listFromSelectServisesId = new List<int>();
     private List<Servicetipe> _servicetipes = Helper.Database.Servicetipes.ToList();
     private int? _role;
-    
+    private List<string> check = new List<string>();
+    private List<String> _pdfFileFromSafe = new List<string>();
+
     public CreateNewOrder()
     {
         InitializeComponent();
@@ -34,7 +38,7 @@ public partial class CreateNewOrder : Window
     
     private void SelectOfTheNumberBarcode()
     {
-        Filter.Items = Helper.Database.Analyzers.Select(x=>x.Barcode.ToString()).OrderBy(x=> x);
+        Filter.Items = Helper.Database.Analyzers.Select(x=> x.Barcode.ToString()).OrderBy(x=> x);
     }
     
     private void ListOfServises()
@@ -111,19 +115,29 @@ public partial class CreateNewOrder : Window
                     .Select(y => y.Id).ToList();
                 var idpatient = patients.Where(x => x.Userid == idusername[0])
                     .Select(x => x.Id).ToList();
-                
-                
-                
-                
-                
-                
-                
-                    
+
+
+                //!!!
+                List<Patient> patient = Helper.Database.Patients.ToList();
+
+                _pdfFileFromSafe.Add(Convert.ToString(DateTime.Now, CultureInfo.InvariantCulture));
+                _pdfFileFromSafe.Add(Convert.ToString(Helper.Database.Ordertables.Count() + 1));
+                _pdfFileFromSafe.Add(Filter.Text);
+                _pdfFileFromSafe.Add(patients.Where(x => x.Userid == idpatient[0]).Select(x => x.Insurancepolicynumber).ToString()!);
+                _pdfFileFromSafe.Add(FullNameClients.Text!);
+                _pdfFileFromSafe.Add(patient[idusername[0]].Birthday.ToString()!);
+                /*for (int i = 0; i < _listFromSelectServises.Count; i++)
+                {
+                 _pdfFileFromSafe.Add();   
+                }*/
+
+
                 Ordertable ordertable = new Ordertable();
                 for (int i = 0; i < _listFromSelectServises.Count; i++)
                 {
-                    ordertable.Id = Helper.Database.Ordertables.Count() + 1;
+                    
                     ordertable.Datecreate = DateTime.Now;
+                    ordertable.Id = Helper.Database.Ordertables.Count() + 1;
                     ordertable.Orderstatus = false;
                     ordertable.Servicestatus = "Rejected";
                     ordertable.Serviceid = _listFromSelectServisesId[i];
@@ -142,106 +156,124 @@ public partial class CreateNewOrder : Window
     private void TestingVariant(object? sender, KeyEventArgs e)
     {
 
-
+        check.Clear();
         List<Usertable> usertables = Helper.Database.Usertables.Where(x => x.Roleid == 5).ToList();
 
-        List<string> check = new List<string>();
 
-        string firstWord = FullNameClients.Text;
-
-        foreach (var secondWord in usertables)
+        if (FullNameClients.Text != "" || FullNameClients.Text != null)
         {
-            var n = FullNameClients.Text.Length + 1;
-            var m = secondWord.Fullname.Length + 1;
-            var matrixD = new int[n, m];
+            string firstWord = FullNameClients.Text;
 
-            const int deletionCost = 1;
-            const int insertionCost = 1;
-
-            for (var i = 0; i < n; i++)
+            foreach (var secondWord in usertables)
             {
-                matrixD[i, 0] = i;
-            } 
+                var n = firstWord.Length + 1;
+                var m = secondWord.Fullname!.Length + 1;
+                var matrixD = new int[n, m];
 
-            for (var j = 0; j < m; j++)
-            {
-                matrixD[0, j] = j;
-            }
+                const int deletionCost = 1;
+                const int insertionCost = 1;
 
-            for (var i = 1; i < n; i++)
-            {
-                for (var j = 1; j < m; j++)
+                for (var i = 0; i < n; i++)
                 {
-                    var substitutionCost = firstWord[i - 1] == secondWord.Fullname[j - 1] ? 0 : 1;
+                    matrixD[i, 0] = i;
+                } 
 
-                    matrixD[i, j] = Minimum(matrixD[i - 1, j] + deletionCost,          // удаление
-                        matrixD[i, j - 1] + insertionCost,         // вставка
-                        matrixD[i - 1, j - 1] + substitutionCost); // замена
+                for (var j = 0; j < m; j++)
+                {
+                    matrixD[0, j] = j;
                 }
+
+                for (var i = 1; i < n; i++)
+                {
+                    for (var j = 1; j < m; j++)
+                    {
+                        var substitutionCost = firstWord[i - 1] == secondWord.Fullname[j - 1] ? 0 : 1;
+
+                        matrixD[i, j] = Minimum(
+                            matrixD[i - 1, j] + deletionCost,          // удаление
+                            matrixD[i, j - 1] + insertionCost,         // вставка
+                            matrixD[i - 1, j - 1] + substitutionCost); // замена
+                    }
+                }
+
+                if (matrixD[n-1,m-1] <= 3)
+                {
+                    check.Add(secondWord.Fullname);
+                }
+                FullNameClientsListBox.Items = check.Select(x => new
+                {
+                    NameClient = x
+                }).ToList();
             }
-            check.Add(matrixD[n - 1, m - 1].ToString());
-            FullNameClients.Items =  check.Select(x => x).ToList();
+        
+        
+        
+            static int Minimum(int a, int b, int c)
+            {
+                if(a > b)
+                {
+                    a = b;
+                }
+
+                if(a > c)
+                {
+                    a = c;
+                }
+
+                return a;
+            }
         }
         
         
         
         
         
-        static int Minimum(int a, int b, int c) => (a = a < b ? a : b) < c ? a : c;
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        /*List<Usertable> usertables = Helper.Database.Usertables.Where(x => x.Roleid == 5).ToList();
 
-        List<string> check = new List<string>();
+        SafeFileMetod();
+    }
 
-        if (string.IsNullOrEmpty(FullNameClients.Text) == false)
+    private void NameClientButton(object? sender, RoutedEventArgs e)
+    {
+        FullNameClients.Text = check[FullNameClientsListBox.SelectedIndex];
+    }
+
+    private async void SafeFileMetod()
+    {
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+        saveFileDialog.Filters?.Add(new FileDialogFilter() {Name = "pdf", Extensions = {"pdf"}});
+        var pathSave = await saveFileDialog.ShowAsync(this);
+        string? path = Convert.ToString(pathSave);
+        if (path != null || path != "")
         {
-            int schet = 0;
-            foreach (var element in usertables)
+            bool cheack = false;
+            using (var doc = SKDocument.CreatePdf(path))
             {
-                int k = 0;
-                if (FullNameClients.Text.Length > element.Fullname.Length)
+                int posicion = 0;
+                do
                 {
-                    
-                    foreach (var i in FullNameClients.Text)
+                    int yCord = 100;
+                    using (var listDoc = doc.BeginPage(600, 850))
                     {
-                        if (i != element.Fullname[k])
+                        for (; posicion < _pdfFileFromSafe.Count; posicion++)
                         {
-                            schet++;
+                            using (var pating = new SKPaint())
+                            {
+                                listDoc.DrawText(_pdfFileFromSafe[posicion], 100, yCord, pating);
+                            }
+
+                            yCord += 20;
+                            cheack = false;
+                                    
+                            if (yCord >= 700)
+                            {
+                                cheack = true;
+                                break;
+                            }
                         }
-                        k++;
                     }
-                }
-                else
-                {
-                    foreach (var i in element.Fullname)
-                    {
-                        if (i != FullNameClients.Text)
-                        {
-                            schet++;
-                        }
-                        k++;
-                    }
-                }
-                if (schet < 4)
-                {
-                    check.Add(element.Fullname);
-                }
-                
+                } while (cheack == true);
             }
-            FullNameClients.Items = check.Select(x => x).ToList();
-        }*/
+        }
     }
 }
